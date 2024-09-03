@@ -1,44 +1,50 @@
 # Roadmap for HuggingFace Repo Fixer
 
-## Current Focus (Version 1.1.0)
+## Completed in Version 1.1.0
 
-1. [ ] Error Handling and Logging
-   - [ ] Implement try-except blocks for API calls and file operations
-   - [ ] Add logging module and replace print statements with log messages
+1. [x] Error Handling and Logging
+   - [x] Implement try-except blocks for API calls and file operations
+   - [x] Add logging module and replace print statements with log messages
 
-2. [ ] Command-line Interface
-   - [ ] Implement CLI using argparse or click
-   - [ ] Add arguments for organization name and other parameters
+2. [x] Command-line Interface
+   - [x] Implement CLI using argparse
+   - [x] Add arguments for organization name and other parameters
 
-3. [ ] Dry Run Mode
-   - [ ] Add --dry-run flag to CLI
-   - [ ] Implement logic to preview changes without making updates
+3. [x] Dry Run Mode
+   - [x] Add --dry-run flag to CLI
+   - [x] Implement logic to preview changes without making updates
 
-4. [ ] Progress Tracking
+4. [x] Configuration File
+   - [x] Use .env file for default settings
+   - [x] Implement functionality to read from .env file
+
+5. [x] Support for Multiple Base Models
+   - [x] Handle cases where base_model is a list
+   - [x] Move existing base_models to merged_models when updating
+
+6. [x] Identify Missing Original Model Information
+   - [x] Create a list of repositories missing original model information
+   - [x] Save the list to a JSON file for manual review
+
+## Current Focus (Version 1.2.0)
+
+1. [ ] Progress Tracking
    - [ ] Add progress bar using tqdm for processing multiple models
 
-5. [ ] Configuration File
-   - [ ] Create config.yaml or config.json for default settings
-   - [ ] Implement functionality to read from config file
+2. [ ] Improved Error Handling
+   - [ ] Implement more specific error types and handling
+   - [ ] Add retry logic for transient errors
 
-## Short-term Goals
+3. [ ] Enhanced Logging
+   - [ ] Add more detailed logging for better troubleshooting
+   - [ ] Implement log rotation to manage log file sizes
 
-1. **Error Handling and Logging**
-   - Implement robust error handling for API calls and file operations
-   - Add logging functionality to track operations and errors
+4. [ ] Performance Optimization
+   - [ ] Implement parallel processing for handling multiple repositories
 
-2. **Command-line Interface**
-   - Create a CLI for easier use and configuration
-   - Allow users to specify the organization and other parameters via command-line arguments
-
-3. **Dry Run Mode**
-   - Implement a dry run mode that shows what changes would be made without actually making them
-
-4. **Progress Tracking**
-   - Add a progress bar or status updates for processing multiple models
-
-5. **Configuration File**
-   - Create a config file to store default settings (e.g., organization name, API token)
+5. [ ] Testing Suite
+   - [ ] Develop unit tests for core functions
+   - [ ] Implement integration tests with mock HuggingFace API
 
 ## Medium-term Goals
 
@@ -53,9 +59,6 @@
 
 4. **GitHub Action**
    - Create a GitHub Action for easy integration into CI/CD pipelines
-
-5. **Testing Suite**
-   - Develop a comprehensive testing suite to ensure reliability
 
 ## Long-term Goals
 
