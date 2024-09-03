@@ -1,6 +1,6 @@
 import re
 import logging
-from huggingface_hub import HfApi
+from huggingface_hub import HfApi, hf_hub_download
 import argparse
 import os
 from dotenv import load_dotenv
@@ -15,8 +15,15 @@ logger = logging.getLogger(__name__)
 def update_readme(model_id, dry_run=False):
     api = HfApi()
     try:
-        readme_content = api.model_info(model_id).readme
-        
+        # Fetch the README content using hf_hub_download
+        readme_path = hf_hub_download(repo_id=model_id, filename="README.md", repo_type="model")
+        with open(readme_path, 'r', encoding='utf-8') as f:
+            readme_content = f.read()
+
+        if not readme_content:
+            logger.warning(f"No README found for {model_id}")
+            return
+
         # Extract the original model from the README
         original_model_match = re.search(r'Original model: \[([^\]]+)\]\(([^)]+)\)', readme_content)
         if not original_model_match:
