@@ -1,4 +1,4 @@
-from huggingface_hub import HfApi, ModelCard
+from huggingface_hub import HfApi
 import random
 import os
 from dotenv import load_dotenv
@@ -42,7 +42,17 @@ for i in range(5):
     
     # Prepare README content
     base_model = random.choice(base_models)
-    base_model_tag = f"base_model: {base_model}" if random.choice([True, False]) else ""
+    
+    # Randomly choose between single base_model, multiple base_models, or no base_model
+    base_model_type = random.choice(['single', 'multiple', 'none'])
+    
+    if base_model_type == 'single':
+        base_model_tag = f"base_model: {base_model}"
+    elif base_model_type == 'multiple':
+        multiple_base_models = random.sample(base_models, k=random.randint(2, 4))
+        base_model_tag = "base_model:\n" + "\n".join(f"- {model}" for model in multiple_base_models)
+    else:
+        base_model_tag = ""
     
     readme_content = f"""---
 language:
