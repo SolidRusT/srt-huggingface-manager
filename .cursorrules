@@ -1,0 +1,4 @@
+This repository is a tool for HuggingFace Hub operations.
+The primary function is to fix the README.md files across all the repositories in a given organization.
+My huggingface organization is https://huggingface.co/solidrust
+This app will help endure that all the models in my HuggingFace organization has accurate README.md files.
