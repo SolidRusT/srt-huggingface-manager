@@ -17,17 +17,23 @@ This tool is designed to update README.md files across all repositories in a giv
    cd huggingface-repo-fixer
    ```
 
-2. Install the required dependencies:
+2. Create and activate a virtual environment:
    ```
-   pip install -r requirements.txt
+   python -m venv ~/venvs/srt-huggingface-manager
+   source ~/venvs/srt-huggingface-manager/bin/activate
    ```
 
-3. Create a `.env` file based on the `.env-example`:
+3. Install the required dependencies:
+   ```
+   pip install -U -r requirements.txt
+   ```
+
+4. Create a `.env` file based on the `.env-example`:
    ```
    cp .env-example .env
    ```
 
-4. Edit the `.env` file and add your HuggingFace API token and organization name:
+5. Edit the `.env` file and add your HuggingFace API token and organization name:
    ```
    HF_ORG_NAME=your-organization-name
    HUGGINGFACE_TOKEN=your-huggingface-token
@@ -39,3 +45,56 @@ This tool is designed to update README.md files across all repositories in a giv
 
 To create mock repositories for testing:
 
+```bash
+python create_mock_repos.py
+```
+
+This will create or update 5 test repositories in your specified organization.
+
+### Updating README Files
+
+To update the README files in your organization's repositories:
+
+1. Dry run (no changes made):
+   ```
+   python update_readme.py --dry-run
+   ```
+
+2. Actual update:
+   ```
+   python update_readme.py
+   ```
+
+## Configuration
+
+- `HF_ORG_NAME`: The name of your HuggingFace organization (set in `.env` file)
+- `HUGGINGFACE_TOKEN`: Your HuggingFace API token (set in `.env` file)
+
+You can override the organization name using the `--org` command-line argument:
+
+```bash
+python update_readme.py --org another-org-name
+```
+
+## Development
+
+To contribute to this project:
+
+1. Fork the repository
+2. Create a new branch for your feature
+3. Implement your changes
+4. Write or update tests as necessary
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- HuggingFace for their excellent API and model hosting platform
+- Contributors to the `huggingface_hub` Python library
+
+## Author
+
+Created by [Suparious](https://github.com/Suparious) for the [SolidRusT](https://github.com/SolidRusT) organization.
