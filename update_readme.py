@@ -1,21 +1,16 @@
-import logging
-import argparse
-from huggingface_hub import HfApi, ModelFilter
 import re
+import logging
+from huggingface_hub import HfApi
+import argparse
+import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
-
-def get_models(organization):
-    api = HfApi()
-    try:
-        models = api.list_models(author=organization, filter=ModelFilter(task="text-generation"))
-        logger.info(f"Successfully retrieved {len(models)} models for organization {organization}")
-        return models
-    except Exception as e:
-        logger.error(f"Error retrieving models for organization {organization}: {str(e)}")
-        return []
 
 def update_readme(model_id, dry_run=False):
     api = HfApi()
@@ -55,33 +50,33 @@ def update_readme(model_id, dry_run=False):
                 count=1
             )
             action = "Added"
-        
-        if dry_run:
-            logger.info(f"[DRY RUN] Would update README for {model_id}")
-            logger.info(f"[DRY RUN] Changes: {action} base_model: {base_model}")
-        else:
-            # Update the README
+
+        if not dry_run:
             api.upload_file(
                 path_or_fileobj=updated_content.encode(),
                 path_in_repo="README.md",
                 repo_id=model_id,
                 repo_type="model",
-                commit_message=f"{action} base_model tag"
+                commit_message=f"{action} base_model tag in README.md"
             )
             logger.info(f"{action} base_model tag for {model_id}")
+        else:
+            logger.info(f"Dry run: Would have {action.lower()} base_model tag for {model_id}")
+
     except Exception as e:
-        logger.error(f"Error updating README for {model_id}: {str(e)}")
+        logger.error(f"Error processing {model_id}: {str(e)}")
 
-def main(args):
-    models = get_models(args.organization)
-    
-    for model in models:
-        update_readme(model.modelId, args.dry_run)
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Update README files for HuggingFace models.")
-    parser.add_argument("organization", help="The HuggingFace organization name")
+def main():
+    parser = argparse.ArgumentParser(description="Update README.md files in HuggingFace models")
+    parser.add_argument("--org", default=os.getenv('HF_ORG_NAME', 'srt-testing'), help="HuggingFace organization name")
     parser.add_argument("--dry-run", action="store_true", help="Perform a dry run without making changes")
     args = parser.parse_args()
 
-    main(args)
+    api = HfApi()
+    models = api.list_models(author=args.org, task="text-generation")
+
+    for model in models:
+        update_readme(model.id, dry_run=args.dry_run)
+
+if __name__ == "__main__":
+    main()
